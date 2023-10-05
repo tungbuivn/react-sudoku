@@ -107,7 +107,7 @@ class Sudoku extends React.Component {
         var nt = k.filter(el => !cols.includes(el));
         // debugger;
         if (data[i][j] == null) {
-          notes[iel] = notes[iel].filter(x => nt.includes(x));
+          notes[iel] = (notes[iel]||[]).filter(x => nt.includes(x));
           // debugger;
         }
 
