@@ -4,8 +4,7 @@
   "main": "build/bundle.js",
   "description": "Sudoku game board",
   "scripts": {
-    "precommit": "pretty-quick",
-    "prepublishOnly": "yarn build",
+    
     "build": "webpack --progress --config webpack.config.js --colors",
     "dev": "storybook dev -p 9001",
     "storybook": "storybook dev -p 9001",
