@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  sudoku:
+    image: node:20
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # environment:
+    # DEBUG: *
+    ports:
+      - 9001:9001
+    working_dir: /code
+    volumes:
+      - code:/code
+
+volumes:
+  ? code
+x-mutagen:
+  sync:
+    defaults:
+      watch:
+        pollingInterval: 1
+      ignore:
+        paths:
+          - .DS_Store
+        vcs: true
+      mode: two-way-resolved
+    code:
+      alpha: .
+      beta: volume://code

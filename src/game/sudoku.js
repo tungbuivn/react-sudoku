@@ -50,18 +50,138 @@ class Sudoku extends React.Component {
   };
   static defaultProps = { difficulty: 'easy', onComplete: () => null };
 
-  state = { ...defaultState, difficulty: this.props.difficulty };
+  state = {
+    ...defaultState,
+    difficulty: this.props.difficulty,
+    noteDone: false,
+  };
+  getNotes(boardIndex, notes) {
+    var r = boardIndex / 9;
+    var c = boardIndex % 9;
+    // update boardindex row/col
+    var nums = Object.keys(this.state.values);
+    if (nums.length < 81) return [];
+    if (typeof this.state.values == 'undefined') return [];
+    // console.log(nums.length);
+    var col = -1;
+    var row = 0;
+    var data = nums.reduce((prev, curr, idx) => {
+      col++;
+      if (col == 9) {
+        col = 0;
+        row++;
+      }
+      var v = this.state.values[curr];
+      prev[row] = prev[row] || [];
+      // debugger;
+      prev[row].push(v.value);
+      return prev;
+    }, []);
+    // debugger;
+    // for (var i = 0; i < 9; i++) {
+    //   // debugger;
+    //   data.push(this.state.board.get(i).map(o => o.value));
+    // }
+    function getCols(col) {
+      var cs = [];
+      for (var i = 0; i < 9; i++) {
+        cs.push(data[i][col]);
+      }
+      return cs;
+    }
+    // var notes = {};
+    var iel = 0;
+    // debugger;
+    for (var i = 0; i < 9; i++) {
+      // iel=iel+1;
+      var k = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      var rows = data[i].filter(o => o != null);
+      k = k.filter(el => !rows.includes(el));
+      // var cols=[];
+
+      for (var j = 0; j < 9; j++) {
+        iel = iel + 1;
+        var cols = getCols(j);
+        // console.log(rows,cols)
+        var nt = k.filter(el => !cols.includes(el));
+        // debugger;
+        if (data[i][j] == null) {
+          notes[iel] = notes[iel].filter(x => nt.includes(x));
+          // debugger;
+        }
+
+        // rows.push(m);
+      }
+
+      // debugger;
+    }
+    return notes;
+  }
 
   componentDidMount() {
     document.addEventListener('keyup', this.onKeypress);
 
     _events.on('reset', difficulty => {
-      this.setState({
+      var data = {
         ...defaultState,
         startDate: Date.now(),
         board: BOARD_GETTERS[difficulty](),
         difficulty,
-      });
+        // notes:{
+        //   // 0:[1,2,3,4,5,6,7,8,9],
+        //   1:[1,2,3],
+        //   2:[1,2,3,4,5,6,7,8,9],
+        //   3:[1,2,3,4,5,6,7,8,9],
+        //   4:[1,2,3,4,5,6,7,8,9]
+        // }
+      };
+      function get(r, c) {
+        return data.board.get(r - 1)[c - 1];
+      }
+      function getCols(col) {
+        var c = [];
+        for (var i = 0; i < 9; i++) {
+          c.push(data.board.get(i)[col].value);
+        }
+        return c;
+      }
+      // calculate board notes
+      var notes = {};
+      var iel = 0;
+      // debugger;
+      for (var i = 0; i < 9; i++) {
+        // iel=iel+1;
+        var k = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        var rows = data.board
+          .get(i)
+          .map(o => o.value)
+          .filter(o => o != null);
+        k = k.filter(el => !rows.includes(el));
+        // var cols=[];
+
+        for (var j = 0; j < 9; j++) {
+          iel = iel + 1;
+          var cols = getCols(j);
+          // console.log(rows,cols)
+          var nt = k.filter(el => !cols.includes(el));
+          if (get(i + 1, j + 1).value == null) {
+            notes[iel] = nt;
+            // debugger;
+          }
+
+          // rows.push(m);
+        }
+
+        // debugger;
+      }
+      // debugger;
+      data.notes = notes;
+      data.noteDone = true;
+      // data.notes[10]=["x","y"]
+      // debugger;
+      this.setState(data);
     });
 
     _events.emit('reset', this.props.difficulty);
@@ -90,16 +210,23 @@ class Sudoku extends React.Component {
   setSelectedBoardIndexes = ({ ...indexes }) => this.setState({ ...indexes });
 
   setValue = (boardIndex, value) => {
-    const { values, notes } = this.state;
+    const { values, notes, noteDone } = this.state;
 
     this.setState({
       values: Object.assign(values, {
         [`${boardIndex}`]: value,
       }),
     });
+    if (noteDone) {
+      // notes=this.getNotes();
+      // debugger;
+      // console.log(boardIndex, "=============")
+      // debugger;
+    }
+    // debugger;
     this.setState({
       notes: {
-        ...notes,
+        ...this.getNotes(boardIndex, notes),
         [boardIndex]: [],
       },
     });

@@ -1,0 +1,39 @@
+{
+  "v": 4,
+  "entries": {
+    "configure-your-project--docs": {
+      "id": "configure-your-project--docs",
+      "title": "Configure your project",
+      "name": "Docs",
+      "importPath": "./src/stories/Configure.mdx",
+      "storiesImports": [],
+      "type": "docs",
+      "tags": ["unattached-mdx", "docs"]
+    },
+    "game--docs": {
+      "id": "game--docs",
+      "title": "Game",
+      "name": "Docs",
+      "importPath": "./src/stories/Game.stories.js",
+      "type": "docs",
+      "tags": ["autodocs", "docs"],
+      "storiesImports": []
+    },
+    "game--default": {
+      "type": "story",
+      "id": "game--default",
+      "name": "Default",
+      "title": "Game",
+      "importPath": "./src/stories/Game.stories.js",
+      "tags": ["autodocs", "story"]
+    },
+    "example-page--logged-outxxxxxxxx": {
+      "type": "story",
+      "id": "example-page--logged-outxxxxxxxx",
+      "name": "Logged Outxxxxxxxx",
+      "title": "Example/Page",
+      "importPath": "./src/stories/Page.stories.js",
+      "tags": ["story"]
+    }
+  }
+}
