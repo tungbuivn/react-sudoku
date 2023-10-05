@@ -10,6 +10,7 @@ React-Sudoku generates random sudoku boards based on three difficulties (easy, m
 
 To install yarn, follow the instructions from the [yarn website.](https://yarnpkg.com/lang/en/docs/install) To install npm, follow the instructions from the [npm website](https://www.npmjs.com/get-npm).
 
+
 ## Getting Started
 
 Assuming you have yarn/npm installed, start by cloning the repo:

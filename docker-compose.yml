@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   sudoku:
-    image: node:20
+    image: sudoku
     build:
       context: .
       dockerfile: Dockerfile
@@ -12,6 +12,8 @@ services:
     working_dir: /code
     volumes:
       - code:/code
+      - /root/.ssh:/root/.ssh
+      - /home/tungbt/react-sudoku/.git:/code/.git
 
 volumes:
   ? code
